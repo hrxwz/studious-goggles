@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>感统训练助手 · 家长端</title>
+    <style>
+        :root {
+            --bg-start: #e8eaed;
+            --bg-mid: #f0f1f4;
+            --bg-end: #f5f5f7;
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --glass-shadow: rgba(0, 0, 0, 0.06);
+            --card-hover-shadow: rgba(0, 0, 0, 0.12);
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-tertiary: #86868b;
+            --accent: #0071e3;
+            --accent-soft: #e8f0fe;
+            --nav-height: 52px;
+            --sidebar-width: 20%;
+            --sidebar-min-width: 200px;
+            --transition-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 20px;
+            --radius-xl: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue',
+                'PingFang SC', 'Microsoft YaHei', sans-serif;
+             background: url('bj.jpg') center/cover no-repeat fixed;
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -180px;
+            left: -120px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(180, 200, 240, 0.35) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatBlob1 18s ease-in-out infinite;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -200px;
+            right: -140px;
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, rgba(210, 190, 230, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatBlob2 22s ease-in-out infinite;
+        }
+        @keyframes floatBlob1 {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(60px, 40px) scale(1.15);
+            }
+            50% {
+                transform: translate(20px, -30px) scale(0.9);
+            }
+            75% {
+                transform: translate(-40px, 25px) scale(1.1);
+            }
+        }
+        @keyframes floatBlob2 {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(-50px, -35px) scale(1.2);
+            }
+            66% {
+                transform: translate(30px, 20px) scale(0.88);
+            }
+        }
+
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border-bottom: 1px solid rgba(200, 200, 210, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            transition: all 0.3s var(--transition-smooth);
+        }
+        .top-nav .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+            white-space: nowrap;
+        }
+        .top-nav .brand .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #5b9cf5, #7cb8ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(91, 156, 245, 0.3);
+        }
+        .top-nav .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            list-style: none;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .top-nav .nav-links li a {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: -0.2px;
+            transition: all 0.28s var(--transition-smooth);
+            white-space: nowrap;
+        }
+        .top-nav .nav-links li a:hover {
+            color: var(--accent);
+            background: rgba(0, 113, 227, 0.06);
+            transform: translateY(-1px);
+        }
+        .top-nav .nav-links li a:active {
+            transform: scale(0.94);
+            transition: transform 0.15s var(--transition-spring);
+        }
+
+        .main-container {
+            display: flex;
+            padding-top: var(--nav-height);
+            min-height: calc(100vh - var(--nav-height) - 200px);
+            position: relative;
+            z-index: 1;
+            gap: 0;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            min-width: var(--sidebar-min-width);
+            max-width: 240px;
+            flex-shrink: 0;
+            padding: 24px 14px 24px 20px;
+            position: sticky;
+            top: var(--nav-height);
+            height: calc(100vh - var(--nav-height));
+            overflow-y: auto;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 3px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.12);
+            border-radius: 10px;
+        }
+        .sidebar .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 13px 16px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            transition: all 0.3s var(--transition-smooth);
+            position: relative;
+            letter-spacing: -0.2px;
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .sidebar .nav-item .nav-icon {
+             width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    background: transparent;
+    transition: all 0.3s var(--transition-smooth);
+}
+        .sidebar .nav-item:hover {
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--text-primary);
+            transform: translateX(3px);
+        }
+        .sidebar .nav-item:active {
+            transform: scale(0.96) translateX(3px);
+            transition: transform 0.15s var(--transition-spring);
+        }
+        .sidebar .nav-item.active {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+            color: var(--accent);
+            font-weight: 600;
+            box-shadow: 0 2px 12px var(--glass-shadow), 0 0 0 1px rgba(0, 113, 227, 0.15);
+        }
+        .sidebar .nav-item.active .nav-icon {
+            background: var(--accent-soft);
+            box-shadow: 0 2px 8px rgba(0, 113, 227, 0.2);
+        }
+        .sidebar .nav-divider {
+            height: 1px;
+            background: rgba(0, 0, 0, 0.06);
+            margin: 8px 10px;
+            border-radius: 1px;
+        }
+        .sidebar .nav-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-tertiary);
+            padding: 6px 16px 2px;
+            font-weight: 600;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 28px 28px 40px 16px;
+            min-width: 0;
+            overflow-y: auto;
+        }
+        .content-panel {
+            display: none;
+            animation: fadeSlideIn 0.4s var(--transition-smooth);
+        }
+        .content-panel.active {
+            display: block;
+        }
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .panel-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+        .panel-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            margin-bottom: 24px;
+            letter-spacing: -0.1px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 18px;
+        }
+        @media (min-width: 1400px) {
+            .card-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        @media (min-width: 1100px) and (max-width: 1399px) {
+            .card-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (min-width: 768px) and (max-width: 1099px) {
+            .card-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 767px) {
+            .card-grid {
+                grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+                gap: 12px;
+            }
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 20px 18px 18px;
+            cursor: pointer;
+            transition: all 0.35s var(--transition-smooth);
+            box-shadow: 0 2px 10px var(--glass-shadow);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 10px;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+            text-decoration: none;
+            color: inherit;
+        }
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            opacity: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.5) 0%, transparent 60%);
+            transition: opacity 0.35s var(--transition-smooth);
+            pointer-events: none;
+        }
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 36px var(--card-hover-shadow), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            border-color: rgba(255, 255, 255, 0.85);
+        }
+        .glass-card:hover::after {
+            opacity: 1;
+        }
+        .glass-card:active {
+            transform: translateY(-3px) scale(0.97);
+            transition: transform 0.18s var(--transition-spring), box-shadow 0.18s var(--transition-smooth);
+            box-shadow: 0 6px 18px var(--card-hover-shadow);
+        }
+        .glass-card .card-cover {
+            width: 72px;
+            height: 72px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            flex-shrink: 0;
+            background: rgba(240, 242, 248, 0.6);
+            transition: all 0.35s var(--transition-smooth);
+            position: relative;
+            z-index: 1;
+        }
+        .glass-card:hover .card-cover {
+            transform: scale(1.08);
+            background: rgba(235, 240, 250, 0.75);
+        }
+        .glass-card .card-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: -0.2px;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 1;
+            line-height: 1.3;
+        }
+        .glass-card .card-desc {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            letter-spacing: -0.1px;
+            position: relative;
+            z-index: 1;
+            line-height: 1.45;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .monitor-large-card {
+            grid-column: 1 / -1;
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.35s var(--transition-smooth);
+            box-shadow: 0 2px 10px var(--glass-shadow);
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 16 / 9;
+            max-height: 380px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1e;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .monitor-large-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 40px var(--card-hover-shadow);
+        }
+        .monitor-large-card:active {
+            transform: translateY(-2px) scale(0.98);
+            transition: transform 0.18s var(--transition-spring);
+        }
+        .monitor-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            z-index: 2;
+        }
+        .monitor-placeholder .play-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: all 0.3s var(--transition-smooth);
+            border: 2px solid rgba(255, 255, 255, 0.35);
+        }
+        .monitor-large-card:hover .play-circle {
+            background: rgba(255, 255, 255, 0.28);
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+        }
+        .monitor-bg-pattern {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 40%, rgba(80, 140, 220, 0.25) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(100, 160, 200, 0.2) 0%, transparent 50%),
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.015) 2px,
+                    rgba(255, 255, 255, 0.015) 4px);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .monitor-dot {
+            position: absolute;
+            top: 16px;
+            left: 20px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff3b30;
+            z-index: 3;
+            animation: monitorPulse 2s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(255, 59, 48, 0.6);
+        }
+        @keyframes monitorPulse {
+            0%,
+            100% {
+                opacity: 1;
+                box-shadow: 0 0 8px rgba(255, 59, 48, 0.5);
+            }
+            50% {
+                opacity: 0.4;
+                box-shadow: 0 0 20px rgba(255, 59, 48, 0.9);
+            }
+        }
+        .monitor-label {
+            position: absolute;
+            top: 14px;
+            left: 38px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.4px;
+            z-index: 3;
+        }
+
+        .assessment-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(245, 248, 255, 0.65));
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 24px 22px;
+            cursor: pointer;
+            transition: all 0.35s var(--transition-smooth);
+            box-shadow: 0 2px 10px var(--glass-shadow);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .assessment-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 32px var(--card-hover-shadow);
+        }
+        .assessment-card:active {
+            transform: translateY(-2px) scale(0.97);
+            transition: transform 0.18s var(--transition-spring);
+        }
+        .assessment-card .assess-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #ff9a56, #ffb347);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 14px rgba(255, 154, 86, 0.3);
+            transition: transform 0.35s var(--transition-smooth);
+            color: white;
+        }
+        .assessment-card:hover .assess-icon {
+            transform: scale(1.08) rotate(-5deg);
+        }
+        .assessment-card .assess-info h3 {
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: -0.2px;
+            margin: 0 0 4px;
+        }
+        .assessment-card .assess-info p {
+            font-size: 0.82rem;
+            color: var(--text-tertiary);
+            margin: 0;
+            letter-spacing: -0.1px;
+        }
+        .assessment-card .arrow-badge {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--text-tertiary);
+            transition: all 0.3s var(--transition-smooth);
+        }
+        .assessment-card:hover .arrow-badge {
+            background: rgba(0, 113, 227, 0.1);
+            color: var(--accent);
+            transform: translateY(-50%) translateX(4px);
+        }
+
+        .plan-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .plan-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.3s var(--transition-smooth);
+            cursor: pointer;
+            box-shadow: 0 1px 6px var(--glass-shadow);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .plan-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 6px 20px var(--card-hover-shadow);
+        }
+        .plan-item:active {
+            transform: scale(0.97);
+            transition: transform 0.15s var(--transition-spring);
+        }
+        .plan-item .plan-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .plan-item .plan-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .plan-item .plan-info h4 {
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: -0.2px;
+            margin: 0 0 2px;
+        }
+        .plan-item .plan-info span {
+            font-size: 0.78rem;
+            color: var(--text-tertiary);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s var(--transition-smooth);
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-dialog {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(26px) saturate(160%);
+            -webkit-backdrop-filter: blur(26px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            border-radius: var(--radius-xl);
+            padding: 28px 24px 22px;
+            max-width: 720px;
+            width: 90%;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+            transform: translateY(20px) scale(0.96);
+            transition: transform 0.35s var(--transition-spring);
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-overlay.show .modal-dialog {
+            transform: translateY(0) scale(1);
+        }
+        .modal-dialog h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin: 0 0 16px;
+            text-align: center;
+        }
+        .modal-dialog .close-btn {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: all 0.3s var(--transition-smooth);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .modal-dialog .close-btn:hover {
+            background: rgba(0, 0, 0, 0.12);
+            color: var(--text-primary);
+        }
+        .modal-dialog .close-btn:active {
+            transform: scale(0.85);
+            transition: transform 0.15s var(--transition-spring);
+        }
+        .video-sim {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #0a0a0d;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .video-sim .play-btn-large {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-smooth);
+            z-index: 2;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .video-sim .play-btn-large:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.12);
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
+        }
+        .video-sim .play-btn-large:active {
+            transform: scale(0.88);
+            transition: transform 0.15s var(--transition-spring);
+        }
+        .quiz-option {
+            display: block;
+            width: 100%;
+            padding: 13px 16px;
+            margin: 8px 0;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-align: left;
+            transition: all 0.25s var(--transition-smooth);
+            font-family: inherit;
+            color: var(--text-primary);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .quiz-option:hover {
+            border-color: var(--accent);
+            background: rgba(0, 113, 227, 0.04);
+        }
+        .quiz-option:active {
+            transform: scale(0.96);
+            transition: transform 0.15s var(--transition-spring);
+            background: rgba(0, 113, 227, 0.1);
+        }
+        .quiz-option.selected {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+            font-weight: 500;
+        }
+        .btn-primary {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 22px;
+            border: none;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            letter-spacing: -0.2px;
+            transition: all 0.28s var(--transition-smooth);
+            font-family: inherit;
+            -webkit-tap-highlight-color: transparent;
+            box-shadow: 0 3px 12px rgba(0, 113, 227, 0.3);
+        }
+        .btn-primary:hover {
+            background: #0077ed;
+            box-shadow: 0 6px 20px rgba(0, 113, 227, 0.4);
+            transform: translateY(-1px);
+        }
+        .btn-primary:active {
+            transform: scale(0.9);
+            transition: transform 0.18s var(--transition-spring);
+            box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35);
+        }
+
+        .site-footer {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border-top: 1px solid rgba(200, 200, 210, 0.3);
+            padding: 28px 32px 22px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+        .footer-info {
+            flex: 1;
+            min-width: 200px;
+        }
+        .footer-info h4 {
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: -0.2px;
+            margin: 0 0 6px;
+        }
+        .footer-info p {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        .footer-qr {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .qr-placeholder {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-sm);
+            background: #fff;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(7, 1fr);
+            gap: 2px;
+            padding: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        .qr-placeholder .qr-dot {
+            background: #1d1d1f;
+            border-radius: 2px;
+        }
+        .qr-placeholder .qr-dot.light {
+            background: #ddd;
+        }
+        .footer-qr span {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            letter-spacing: 0.2px;
+        }
+        .footer-contact {
+            flex-shrink: 0;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            min-width: 140px;
+        }
+        .footer-contact strong {
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 767px) {
+            .top-nav {
+                padding: 0 14px;
+                height: 46px;
+            }
+            .top-nav .brand {
+                font-size: 0.9rem;
+                gap: 6px;
+            }
+            .top-nav .brand .logo-icon {
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                font-size: 14px;
+            }
+            .top-nav .nav-links li a {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+                border-radius: 14px;
+            }
+            .main-container {
+                flex-direction: column;
+                padding-top: 46px;
+            }
+            .sidebar {
+                position: sticky;
+                top: 46px;
+                width: 100%;
+                min-width: unset;
+                max-width: unset;
+                height: auto;
+                flex-direction: row;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding: 10px 10px 6px;
+                gap: 4px;
+                z-index: 10;
+                background: rgba(255, 255, 255, 0.55);
+                backdrop-filter: blur(18px) saturate(140%);
+                -webkit-backdrop-filter: blur(18px) saturate(140%);
+                border-bottom: 1px solid rgba(200, 200, 210, 0.3);
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+            .sidebar::-webkit-scrollbar {
+                display: none;
+            }
+            .sidebar .nav-label {
+                display: none;
+            }
+            .sidebar .nav-divider {
+                display: none;
+            }
+            .sidebar .nav-item {
+                flex-shrink: 0;
+                padding: 9px 14px;
+                font-size: 0.8rem;
+                border-radius: 20px;
+                gap: 6px;
+                white-space: nowrap;
+            }
+            .sidebar .nav-item .nav-icon {
+                width: 28px;
+                height: 28px;
+                border-radius: 8px;
+                font-size: 15px;
+            }
+            .sidebar .nav-item:hover {
+                transform: none;
+            }
+            .sidebar .nav-item.active {
+                transform: none;
+            }
+            .content-area {
+                padding: 16px 12px 30px;
+            }
+            .panel-title {
+                font-size: 1.2rem;
+            }
+            .glass-card {
+                padding: 14px 12px 12px;
+                gap: 7px;
+            }
+            .glass-card .card-cover {
+                width: 50px;
+                height: 50px;
+                font-size: 26px;
+                border-radius: 12px;
+            }
+            .glass-card .card-title {
+                font-size: 0.82rem;
+            }
+            .glass-card .card-desc {
+                font-size: 0.7rem;
+            }
+            .site-footer {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 20px 16px 16px;
+                gap: 16px;
+            }
+            .monitor-large-card {
+                aspect-ratio: 4/3;
+                max-height: 220px;
+            }
+            .modal-dialog {
+                padding: 20px 16px 16px;
+                width: 94%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部固定导航（保持不变） -->
+    <nav class="top-nav" role="navigation" aria-label="顶部导航">
+        <div class="brand">
+            <div class="logo-icon">
+    <img src="logo.png" alt="logo" style="width:100%; height:100%; object-fit:cover; border-radius:9px;">
+</div>
+            <span>感统训练助手</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="https://www.baidu.com/s?wd=感觉统合训练" target="_blank" rel="noopener" title="感统知识百科">📚 知识百科</a></li>
+            <li><a href="https://www.baidu.com/s?wd=儿童感统训练专家" target="_blank" rel="noopener" title="专家在线咨询">👨‍⚕️ 专家在线</a></li>
+            <li><a href="https://www.baidu.com/s?wd=感统训练方法" target="_blank" rel="noopener" title="帮助中心">❓ 帮助中心</a></li>
+            <li><a href="#" onclick="event.preventDefault();showSimpleModal('关于感统训练助手','本APP专为需要感统训练的儿童家长设计，提供实时监控、八大感统能力训练模块、问卷评估及个性化定制训练计划。助力孩子健康成长！')" title="关于我们">ℹ️ 关于</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主体区域（结构不变） -->
+    <div class="main-container">
+        <!-- 左侧边栏（保持不变） -->
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="模块导航">
+            <span class="nav-label">核心模块</span>
+            <button class="nav-item" data-panel="monitor" aria-label="实时监控">
+                <span class="nav-icon">  
+                    <img src="monitor.png" alt="" style="width:28px; height:28px; border-radius:6px; object-fit:contain;">
+</span>实时监控
+            </button>
+            
+<button class="nav-item active" data-panel="training" aria-label="感统训练">
+    <span class="nav-icon">
+        <img src="duanlian.png" alt="" style="width:28px; height:28px; border-radius:6px; object-fit:contain;">
+    </span> 感统训练
+</button>
+            <button class="nav-item" data-panel="profile" aria-label="个人中心">
+    <span class="nav-icon">
+        <img src="profile.png" alt="" style="width:28px; height:28px; border-radius:6px; object-fit:contain;">
+    </span> 个人中心
+</button>
+            <div class="nav-divider"></div>
+            <span class="nav-label">快捷入口</span>
+            <button class="nav-item" data-panel="training" data-scroll-to="grossMotor" aria-label="大运动训练">
+                <span class="nav-icon">🏃</span> 大运动
+            </button>
+            <button class="nav-item" data-panel="training" data-scroll-to="vestibular" aria-label="前庭觉训练">
+                <span class="nav-icon">🎠</span> 前庭觉
+            </button>
+        </aside>
+
+        <!-- 右侧内容区 -->
+        <main class="content-area" id="contentArea">
+            <!-- 监控面板（保持不变） -->
+            <section class="content-panel" id="panel-monitor" aria-label="实时监控面板">
+                <h2 class="panel-title">📹 实时监控</h2>
+                <p class="panel-subtitle">查看孩子当前训练状态，点击画面进入全屏监控</p>
+                <div class="monitor-large-card" onclick="openVideoModal()" title="点击查看实时监控画面" role="button" tabindex="0" aria-label="实时监控画面，点击放大">
+                    <div class="monitor-bg-pattern"></div>
+                    <span class="monitor-dot" aria-hidden="true"></span>
+                    <span class="monitor-label">● LIVE</span>
+                    <div class="monitor-placeholder">
+                        <div class="play-circle">▶</div>
+                        <span style="font-size:0.9rem;letter-spacing:0.3px;">点击查看实时画面</span>
+                    </div>
+                </div>
+                <div class="card-grid" style="margin-top:16px;">
+                    <div class="glass-card" onclick="openVideoModal()" role="button" tabindex="0">
+                        <div class="card-cover">🎥</div>
+                        <div class="card-title">摄像头 1</div>
+                        <div class="card-desc">训练区域主画面</div>
+                    </div>
+                    <div class="glass-card" onclick="openVideoModal()" role="button" tabindex="0">
+                        <div class="card-cover">📷</div>
+                        <div class="card-title">摄像头 2</div>
+                        <div class="card-desc">活动室广角画面</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 训练面板（卡片内容替换为八大感统模块） -->
+            <section class="content-panel active" id="panel-training" aria-label="感统训练面板">
+                <h2 class="panel-title">🏋️ 八大感统能力训练</h2>
+                <p class="panel-subtitle">点击卡片查看完整训练教案（含教具、操作方法与通过标准）</p>
+                <div class="card-grid" id="trainingGrid">
+                    <!-- 动态生成八大模块卡片 -->
+                </div>
+            </section>
+
+            <!-- 个人中心面板（问卷替换为完整15题） -->
+            <section class="content-panel" id="panel-profile" aria-label="个人中心面板">
+                <h2 class="panel-title">👤 个人中心</h2>
+                <p class="panel-subtitle">完成问卷评估，获取专属个性化训练计划</p>
+                <!-- 问卷评估卡片 -->
+                <div class="assessment-card" onclick="openFullQuizModal()" role="button" tabindex="0" aria-label="打开感统能力问卷评估">
+                   <div class="assess-icon">
+    <img src="quiz.png" alt="问卷" style="width:28px; height:28px; object-fit:contain;">
+</div>
+                    <div class="assess-info">
+                        <h3>感统能力问卷评估</h3>
+                        <p>15道专业题目，科学评估孩子当前感统发展水平</p>
+                    </div>
+                    <div class="arrow-badge">→</div>
+                </div>
+                <!-- 个性化训练计划 -->
+                <h3 style="font-weight:600;font-size:1rem;letter-spacing:-0.2px;margin-bottom:10px;">📅 个性化定制训练计划</h3>
+                <div class="plan-list" id="planList">
+                    <div class="plan-item" onclick="handlePlanClick('基础感统激活计划')" role="button" tabindex="0">
+                        <div class="plan-dot" style="background:#ff9a56;"></div>
+                        <div class="plan-info">
+                            <h4>基础感统激活计划</h4>
+                            <span>适合初次评估后的入门训练 · 4周</span>
+                        </div>
+                    </div>
+                    <div class="plan-item" onclick="handlePlanClick('前庭强化专项计划')" role="button" tabindex="0">
+                        <div class="plan-dot" style="background:#5b9cf5;"></div>
+                        <div class="plan-info">
+                            <h4>前庭强化专项计划</h4>
+                            <span>针对前庭觉薄弱 · 6周密集训练</span>
+                        </div>
+                    </div>
+                    <div class="plan-item" onclick="handlePlanClick('综合感统全面提升')" role="button" tabindex="0">
+                        <div class="plan-dot" style="background:#a78bfa;"></div>
+                        <div class="plan-info">
+                            <h4>综合感统全面提升</h4>
+                            <span>八大能力均衡发展 · 12周</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 底部（保持不变） -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-info">
+            <h4>🧠 感统训练助手</h4>
+            <p>专为感统训练儿童家长设计，集成实时监控、八大感统能力训练、问卷评估及个性化定制训练计划。科学陪伴，助力孩子每一步成长。</p>
+            <p style="margin-top:4px;font-size:0.72rem;">© 2026 感统训练助手 · 家长端 v1.0</p>
+        </div>
+        <div class="footer-qr" aria-label="二维码">
+            <div class="qr-placeholder" title="扫码下载APP">
+                <span class="qr-dot"></span><span class="qr-dot"></span><span class="qr-dot light"></span><span class="qr-dot"></span><span class="qr-dot"></span><span class="qr-dot light"></span><span class="qr-dot"></span>
+                <span class="qr-dot light"></span><span class="qr-dot"></span><span class="qr-dot"></span><span class="qr-dot light"></span><span class="qr-dot"></span><span class="qr-dot"></span><span class="qr-dot light"></span>
+                <span class="qr-dot"></span><span class="qr-dot light"></span><span class="qr-dot"></span><span class="qr-dot"></span><span class="qr-dot light"></span><span class="qr-dot"></span><span class="qr-dot"></span>
+                <span class="qr-dot"></span><span class="qr-dot"></span><span class="qr-dot light"></span><span class="qr-dot"></span><span class="qr-dot"></span><span class="qr-dot light"></span><span class="qr-dot"></span>
+                <span class="qr-dot light"></span><span class="qr-dot"></span><span class="qr-dot"></span><span class="qr-dot light"></span><span class="qr-dot"></span><span class="qr-dot"></span><span class="qr-dot light"></span>
+                <span class="qr-dot"></span><span class="qr-dot light"></span><span class="qr-dot"></span><span class="qr-dot"></span><span class="qr-dot light"></span><span class="qr-dot"></span><span class="qr-dot"></span>
+                <span class="qr-dot"></span><span class="qr-dot"></span><span class="qr-dot light"></span><span class="qr-dot"></span><span class="qr-dot"></span><span class="qr-dot light"></span><span class="qr-dot"></span>
+            </div>
+            <span>扫码下载APP</span>
+        </div>
+        <div class="footer-contact">
+            <strong>联系我们</strong><br>
+            📧 support@gantong.com<br>
+            📞 400-888-6789<br>
+            🕐 工作日 9:00-18:00
+        </div>
+    </footer>
+
+    <!-- 视频弹窗（保持不变） -->
+    <div class="modal-overlay" id="videoModal" aria-hidden="true">
+        <div class="modal-dialog" style="max-width:640px;" role="dialog" aria-label="实时监控画面">
+            <button class="close-btn" onclick="closeVideoModal()" aria-label="关闭">✕</button>
+            <h3>📹 实时监控画面</h3>
+            <div class="video-sim" aria-label="模拟视频播放区域">
+                <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(40,60,100,0.4) 0%,transparent 70%);pointer-events:none;"></div>
+                <div style="position:absolute;top:10px;left:14px;color:rgba(255,255,255,0.6);font-size:0.7rem;letter-spacing:0.5px;z-index:3;">● REC 00:12:34</div>
+                <div class="play-btn-large" onclick="event.stopPropagation();showSimpleModal('提示','模拟视频播放中…\n实际使用时可接入真实摄像头流。')" aria-label="播放按钮">▶</div>
+            </div>
+            <p style="text-align:center;margin-top:10px;font-size:0.8rem;color:var(--text-tertiary);">摄像头 1 · 训练区域主画面</p>
+        </div>
+    </div>
+
+    <!-- 训练详情弹窗（用于显示具体教案） -->
+    <div class="modal-overlay" id="trainingDetailModal" aria-hidden="true">
+        <div class="modal-dialog" style="max-width:800px;" role="dialog" aria-label="训练教案详情">
+            <button class="close-btn" onclick="closeTrainingDetail()" aria-label="关闭">✕</button>
+            <div id="trainingDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- 完整问卷弹窗 -->
+    <div class="modal-overlay" id="fullQuizModal" aria-hidden="true">
+        <div class="modal-dialog" style="max-width:700px;" role="dialog" aria-label="感统能力问卷评估">
+            <button class="close-btn" onclick="closeFullQuiz()" aria-label="关闭">✕</button>
+            <h3>📋 儿童感统能力评估问卷</h3>
+            <p style="text-align:center;font-size:0.85rem;color:var(--text-tertiary);margin-bottom:14px;">请根据孩子近一个月表现，勾选最符合的选项（A=很少1分，B=有时2分，C=经常3分）</p>
+            <div id="quizContainer"></div>
+            <button class="btn-primary" onclick="submitFullQuiz()" style="display:block;margin:20px auto 0;">提交评估</button>
+            <p id="quizResultText" style="text-align:center;margin-top:12px;font-weight:500;display:none;"></p>
+        </div>
+    </div>
+
+    <!-- 通用提示弹窗（保持不变） -->
+    <div class="modal-overlay" id="simpleModal" aria-hidden="true">
+        <div class="modal-dialog" style="max-width:440px;" role="dialog" aria-label="提示">
+            <button class="close-btn" onclick="closeSimpleModal()" aria-label="关闭">✕</button>
+            <h3 id="simpleModalTitle">提示</h3>
+            <p id="simpleModalBody" style="text-align:center;white-space:pre-line;font-size:0.9rem;color:var(--text-secondary);"></p>
+            <button class="btn-primary" onclick="closeSimpleModal()" style="display:block;margin:12px auto 0;">确 定</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- 八大感统训练模块完整数据 ----------
+            const trainingModules = [
+                {
+                    id: 'grossMotor', title: '大运动', icon: '🏃', desc: '爬行、站姿等粗大动作训练',
+                    items: [
+                        { title:'灵活爬行', aids:'地垫', method:'儿童手膝位，玩具放前方1.5米，引导持续爬行。', standard:['脱离辅助，手膝爬行1.2米','交叉手膝爬行1.5米'] },
+                        { title:'爬上楼梯', aids:'玩具', method:'坐于楼梯下方，玩具放第三阶，示范爬楼梯。', standard:['手膝爬上1阶','手膝爬上2阶'] },
+                        { title:'爬下楼梯', aids:'楼梯', method:'双膝跪第四阶，下方引导倒退爬下。', standard:['倒退爬下1~2阶','倒退爬下3阶'] },
+                        { title:'坐姿转动躯干', aids:'玩具', method:'玩具置身后，转身取物。', standard:['单侧旋转180°','双侧旋转180°'] },
+                        { title:'扶桌子坐地', aids:'桌子、玩具', method:'扶桌站，玩具放地面，指令坐下。', standard:['扶持缓慢坐地','独立扶桌坐地'] },
+                        { title:'弯腰', aids:'矮凳、玩具', method:'坐矮凳捡地面玩具。', standard:['保持平衡15~29秒','保持平衡30秒以上'] },
+                        { title:'独自站立', aids:'秒表', method:'观察独立站立时长。', standard:['站立5~9秒','站立10秒以上'] },
+                        { title:'弯腰捡拾物品', aids:'玩具', method:'站立弯腰拾取。', standard:['拾取后短暂平衡','站立弯腰捡起并站直'] }
+                    ]
+                },
+                {
+                    id: 'vestibular', title: '前庭觉', icon: '🎠', desc: '旋转与摇晃运动',
+                    items: [
+                        { title:'坐/蹲旋转浴盆', aids:'旋转浴盆', method:'儿童坐/蹲盆内，缓慢回转(2~3秒/圈)。', standard:['单次5~8秒，总时长20秒'] },
+                        { title:'趴旋转浴盆', aids:'旋转浴盆', method:'俯卧浴盆沿，缓慢回转。', standard:['单次5~8秒，总时长20秒'] },
+                        { title:'平躺摇晃平衡台', aids:'平衡台', method:'平躺，指导者左右摇晃，睁眼/闭眼。', standard:['摇晃10~60次，单次5~8分钟'] },
+                        { title:'匍匐摇晃平衡台', aids:'平衡台', method:'放置物品吸引匍匐取物，自主摇晃。', standard:['自主摇晃10~60次'] },
+                        { title:'跪坐/静坐摇晃', aids:'平衡台', method:'儿童自主维持平衡，左右摇晃。', standard:['摇晃10~60次，单次5~8分钟'] }
+                    ]
+                },
+                {
+                    id: 'balance', title: '平衡能力', icon: '⚖️', desc: '手眼协调与全身稳定',
+                    items: [
+                        { title:'打保龄球', aids:'皮球、空瓶', method:'瓶子排列，皮球击打。', standard:['近距离击球','标准距离','分散瓶命中≥80%'] },
+                        { title:'互动式投篮', aids:'球', method:'轮流投篮。', standard:['独立投篮成功率≥90%'] },
+                        { title:'照镜子游戏', aids:'镜子', method:'模仿老师头部、肢体动作。', standard:['完整复刻正确率≥90%'] },
+                        { title:'坐独脚凳', aids:'独脚凳', method:'独立坐稳，完成拍手、抛接球。', standard:['手扶坐稳','双人拍手不倾倒','抛接球10次'] },
+                        { title:'独脚凳踢腿', aids:'独脚凳', method:'坐稳后交替抬腿。', standard:['双手叉腰抬腿','双手平举抬腿','对侧手触脚背4组'] }
+                    ]
+                },
+                {
+                    id: 'proprioception', title: '本体觉', icon: '🧗', desc: '身体感知与力量控制',
+                    items: [
+                        { title:'飞卧大笼球', aids:'大笼球', method:'俯卧球上，指导者握持晃动。', standard:['维持30秒','1分钟','2分钟'] },
+                        { title:'人墙对攻', aids:'球', method:'俯卧推球撞墙接回弹。', standard:['1分钟5次','10次','15次'] },
+                        { title:'指点悬球', aids:'按摩球', method:'固定体态，手指点触悬球。', standard:['1分钟5次','10次'] },
+                        { title:'脚踢悬球', aids:'球', method:'变换体态，精准踢球。', standard:['1分钟5次','10次'] },
+                        { title:'定位移物', aids:'小球', method:'双手持球运至指定点。', standard:['1分钟5次','10次'] },
+                        { title:'背后运球', aids:'小球', method:'后背传递小球。', standard:['1分钟5次','10次'] }
+                    ]
+                },
+                {
+                    id: 'visual', title: '视觉能力', icon: '👁️', desc: '视觉集中与视动协调',
+                    items: [
+                        { title:'套圈', aids:'套圈、套杆', method:'站立投掷套圈。', standard:['50cm双手50%','50cm双手80%','1米单手50%','1米单手80%'] },
+                        { title:'看卡片', aids:'认知卡片', method:'持续注视卡片。', standard:['连续10次','20次','单次≥1分钟'] },
+                        { title:'击打小球', aids:'悬吊小球', method:'球拍击打晃动小球。', standard:['10中5','10中8','晃动10中8'] },
+                        { title:'看飘落气球', aids:'气球', method:'跟随气球飘落轨迹。', standard:['30秒','1分钟','2~3分钟'] },
+                        { title:'找糖果', aids:'多色糖果、骰子', method:'投骰找匹配颜色糖果。', standard:['30秒正确率50%','80%'] },
+                        { title:'搭积木', aids:'积木、图纸', method:'对照图纸复刻。', standard:['1分钟正确率50%','80%'] },
+                        { title:'看图做动作', aids:'动作卡片', method:'按卡片完成动作。', standard:['1组80%','2组80%','3组80%','4组80%'] }
+                    ]
+                },
+                {
+                    id: 'fineMotor', title: '精细动作', icon: '✂️', desc: '手部精细操作与握笔',
+                    items: [
+                        { title:'珠子入瓶', aids:'窄口瓶、珠子', method:'单颗装入瓶中。', standard:['31~60秒','≤10秒'] },
+                        { title:'解扣子', aids:'纽扣带', method:'最快速度解扣。', standard:['辅助解开','独立3秒1粒，连续3次'] },
+                        { title:'系扣子', aids:'纽扣带', method:'快速扣解。', standard:['辅助完成','独立3秒扣解1粒，连续6次'] },
+                        { title:'快速对指', aids:'无', method:'跟随老师手指动作。', standard:['四指一一触碰','4秒完成4轮'] },
+                        { title:'三指握笔', aids:'笔、纸', method:'纠正三指握姿。', standard:['拇食指握中段','握上段平稳移动'] },
+                        { title:'涂鸦', aids:'笔、纸', method:'模仿画竖线。', standard:['线条>2cm','>4cm'] },
+                        { title:'仿画竖线', aids:'笔、纸', method:'复刻竖线。', standard:['5cm偏差21°~45°','>5cm偏差≤20°'] },
+                        { title:'仿画横线', aids:'笔、纸', method:'复刻横线。', standard:['5cm偏差21°~45°','>5cm偏差≤20°'] }
+                    ]
+                },
+                {
+                    id: 'auditory', title: '听觉能力', icon: '👂', desc: '听觉记忆与听动协调',
+                    items: [
+                        { title:'鹦鹉学舌(数字)', aids:'语音', method:'复述一串数字。', standard:['复述5位','9位'] },
+                        { title:'鹦鹉学舌(词句)', aids:'语音', method:'复述句子。', standard:['10字短句','15字以上长句'] },
+                        { title:'接龙说词', aids:'语音', method:'接续同类词语。', standard:['3组','5组','7组'] },
+                        { title:'听故事回答', aids:'故事', method:'听故事后答题。', standard:['3秒内正确','1秒内正确'] },
+                        { title:'大西瓜小西瓜', aids:'指令', method:'反向手势游戏。', standard:['10秒5个','8个','10个'] },
+                        { title:'高个矮个', aids:'指令', method:'反向动作。', standard:['10秒5个','8个','10个'] },
+                        { title:'听词做动作', aids:'指令', method:'听到指定词做动作。', standard:['1组80%','2组80%','3组80%','4组80%'] }
+                    ]
+                },
+                {
+                    id: 'tactile', title: '触觉能力', icon: '🤲', desc: '触觉高敏/低敏干预',
+                    items: [
+                        { title:'仰卧大笼球', aids:'大笼球', method:'仰卧球上，前后左右滚动。', standard:['刺激5分钟，无抗拒'] },
+                        { title:'倚靠小笼球', aids:'小笼球', method:'靠墙挤压小球。', standard:['刺激5分钟，无抗拒'] },
+                        { title:'坐上大笼球', aids:'大笼球', method:'坐球上互动游戏。', standard:['刺激5分钟，无抗拒'] },
+                        { title:'俯卧大笼球抓物', aids:'大笼球、玩具', method:'俯卧抓取前方玩具。', standard:['刺激5分钟，无抗拒'] },
+                        { title:'糊壁纸游戏', aids:'壁纸', method:'贴墙滚动。', standard:['5分钟感知墙面触觉'] },
+                        { title:'擦背游戏', aids:'海绵/毛巾', method:'轻擦背部。', standard:['5分钟感知触觉'] },
+                        { title:'压马路', aids:'软垫、大笼球', method:'球体滚压身体。', standard:['5分钟感知触觉'] }
+                    ]
+                }
+            ];
+
+            // 渲染训练卡片
+            const trainingGrid = document.getElementById('trainingGrid');
+            trainingModules.forEach(mod => {
+                const card = document.createElement('div');
+                card.className = 'glass-card';
+                card.id = 'card-' + mod.id;
+                card.setAttribute('data-module-id', mod.id);
+                card.innerHTML = `<div class="card-cover">${mod.icon}</div><div class="card-title">${mod.title}</div><div class="card-desc">${mod.desc}</div>`;
+                card.addEventListener('click', () => openTrainingDetail(mod));
+                trainingGrid.appendChild(card);
+            });
+
+            // 打开训练详情弹窗
+            function openTrainingDetail(mod) {
+                const modal = document.getElementById('trainingDetailModal');
+                const content = document.getElementById('trainingDetailContent');
+                let html = `<h3 style="text-align:left;">${mod.icon} ${mod.title}</h3><p style="color:var(--text-tertiary);margin-bottom:16px;">${mod.desc}</p>`;
+                mod.items.forEach((item, idx) => {
+                    html += `<div style="background:rgba(255,255,255,0.4);backdrop-filter:blur(10px);border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.6);">
+                        <strong style="font-size:1rem;">${idx+1}. ${item.title}</strong>
+                        <p style="margin:4px 0;font-size:0.85rem;"><span style="color:var(--accent);">🧩 教具：</span>${item.aids}</p>
+                        <p style="margin:4px 0;font-size:0.85rem;"><span style="color:var(--accent);">📋 操作：</span>${item.method}</p>
+                        <p style="margin:4px 0;font-size:0.85rem;"><span style="color:var(--accent);">✅ 通过标准：</span></p><ul style="margin:0;padding-left:20px;font-size:0.82rem;">${item.standard.map(s=>`<li>${s}</li>`).join('')}</ul>
+                    </div>`;
+                });
+                content.innerHTML = html;
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+            window.closeTrainingDetail = function(){
+                document.getElementById('trainingDetailModal').classList.remove('show');
+                document.body.style.overflow = '';
+            };
+
+            // 完整问卷
+            const quizQuestions = [
+                { dim:'前庭觉', text:'怕荡秋千、玩滑梯或坐旋转木马' },
+                { dim:'前庭觉', text:'走路不稳、容易摔跤' },
+                { dim:'前庭觉', text:'坐不住，喜欢不停晃动身体' },
+                { dim:'本体觉', text:'走路常撞到门框或家具' },
+                { dim:'本体觉', text:'写字涂色特别用力，或者特别轻' },
+                { dim:'本体觉', text:'模仿动作困难（如跟着做操）' },
+                { dim:'触觉', text:'不喜欢被人碰、抱或拉手' },
+                { dim:'触觉', text:'讨厌某些材质的衣服或食物' },
+                { dim:'触觉', text:'喜欢用力捏东西，或反复摸特定材质' },
+                { dim:'视觉与听觉', text:'对强光、特定颜色过度敏感或回避' },
+                { dim:'视觉与听觉', text:'容易分心，注意力集中时间短' },
+                { dim:'视觉与听觉', text:'对某些声音过度敏感（如吸尘器、吹风机）' },
+                { dim:'精细与协调', text:'握笔、用剪刀、扣扣子有困难' },
+                { dim:'精细与协调', text:'跳绳或双手交替拍球困难' },
+                { dim:'精细与协调', text:'动作笨拙，左右手配合不协调' }
+            ];
+            const quizContainer = document.getElementById('quizContainer');
+            function renderQuiz(){
+                let html = '';
+                quizQuestions.forEach((q,idx)=>{
+                    html += `<div style="margin-bottom:12px;"><p style="font-weight:500;margin:0 0 4px;">${idx+1}. ${q.text}</p>
+                    <button class="quiz-option" data-q="${idx}" data-a="1">A. 很少 (1分)</button>
+                    <button class="quiz-option" data-q="${idx}" data-a="2">B. 有时 (2分)</button>
+                    <button class="quiz-option" data-q="${idx}" data-a="3">C. 经常 (3分)</button></div>`;
+                });
+                quizContainer.innerHTML = html;
+            }
+            renderQuiz();
+
+            quizContainer.addEventListener('click', function(e){
+                if(e.target.classList.contains('quiz-option')){
+                    const q = e.target.dataset.q;
+                    const siblings = quizContainer.querySelectorAll(`.quiz-option[data-q="${q}"]`);
+                    siblings.forEach(s=>s.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                    e.target.style.transform = 'scale(0.95)';
+                    setTimeout(()=>{ e.target.style.transform = ''; }, 150);
+                }
+            });
+
+            window.openFullQuizModal = function(){
+                document.getElementById('fullQuizModal').classList.add('show');
+                document.body.style.overflow = 'hidden';
+                document.getElementById('quizResultText').style.display='none';
+                // 清除之前选择
+                quizContainer.querySelectorAll('.quiz-option').forEach(opt=>opt.classList.remove('selected'));
+            };
+            window.closeFullQuiz = function(){
+                document.getElementById('fullQuizModal').classList.remove('show');
+                document.body.style.overflow = '';
+            };
+
+            window.submitFullQuiz = function(){
+                const answers = {};
+                document.querySelectorAll('#quizContainer .quiz-option.selected').forEach(opt=>{
+                    answers[opt.dataset.q] = parseInt(opt.dataset.a);
+                });
+                if(Object.keys(answers).length < 15){
+                    showSimpleModal('提示','请完成全部15道题目再提交。');
+                    return;
+                }
+                let totalScore = 0;
+                const dimScores = { '前庭觉':0, '本体觉':0, '触觉':0, '视觉与听觉':0, '精细与协调':0 };
+                quizQuestions.forEach((q,idx)=>{
+                    const score = answers[idx] || 0;
+                    totalScore += score;
+                    dimScores[q.dim] += score;
+                });
+                let level = '';
+                if(totalScore<=20) level='感统发展良好，日常游戏保持即可';
+                else if(totalScore<=30) level='部分能力需关注，建议针对性训练';
+                else level='多项能力发展滞后，建议系统感统训练';
+                const weakDims = Object.entries(dimScores).filter(([k,v])=>v>=6).map(([k])=>k).join('、');
+                const resultText = `总分：${totalScore}分。${level}。${weakDims?'弱项维度：'+weakDims+'，已优先安排对应训练。':''}`;
+                document.getElementById('quizResultText').textContent = resultText;
+                document.getElementById('quizResultText').style.display='block';
+                // 自动更新个性化计划
+                setTimeout(()=>{
+                    closeFullQuiz();
+                    switchPanel('profile');
+                    const planList = document.getElementById('planList');
+                    planList.innerHTML = '';
+                    if(weakDims){
+                        weakDims.split('、').forEach(dim=>{
+                            const plan = document.createElement('div');
+                            plan.className='plan-item';
+                            plan.innerHTML = `<div class="plan-dot" style="background:#5b9cf5;"></div><div class="plan-info"><h4>${dim}强化计划</h4><span>根据评估自动生成 · 4~8周</span></div>`;
+                            planList.appendChild(plan);
+                        });
+                    } else {
+                        planList.innerHTML = '<div class="plan-item"><div class="plan-dot" style="background:#34c759;"></div><div class="plan-info"><h4>综合保持计划</h4><span>日常游戏维持现有能力</span></div></div>';
+                    }
+                }, 800);
+            };
+
+            // 其他原有功能（保持不变）
+            window.openVideoModal = function() {
+                document.getElementById('videoModal').classList.add('show');
+                document.body.style.overflow = 'hidden';
+            };
+            window.closeVideoModal = function() {
+                document.getElementById('videoModal').classList.remove('show');
+                document.body.style.overflow = '';
+            };
+            window.showSimpleModal = function(title, body) {
+                document.getElementById('simpleModalTitle').textContent = title;
+                document.getElementById('simpleModalBody').textContent = body;
+                document.getElementById('simpleModal').classList.add('show');
+                document.body.style.overflow = 'hidden';
+            };
+            window.closeSimpleModal = function() {
+                document.getElementById('simpleModal').classList.remove('show');
+                document.body.style.overflow = '';
+            };
+            window.handlePlanClick = function(planName) {
+                showSimpleModal('训练计划', '「' + planName + '」\n\n该计划已为您生成，包含每日训练任务、进度跟踪和阶段性评估。');
+            };
+
+            // 侧边栏导航（保持不变）
+            const navItems = document.querySelectorAll('.sidebar .nav-item');
+            function switchPanel(panelName){
+                document.querySelectorAll('.content-panel').forEach(p=>p.classList.remove('active'));
+                document.getElementById('panel-'+panelName).classList.add('active');
+                navItems.forEach(item=>{
+                    item.classList.remove('active');
+                    if(item.dataset.panel===panelName && !item.dataset.scrollTo) item.classList.add('active');
+                });
+            }
+            navItems.forEach(item=>{
+                item.addEventListener('click',function(){
+                    const panel = this.dataset.panel;
+                    if(panel) switchPanel(panel);
+                    const scrollTo = this.dataset.scrollTo;
+                    if(scrollTo){
+                        setTimeout(()=>{
+                            const el = document.getElementById('card-'+scrollTo);
+                            if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
+                        },300);
+                    }
+                });
+            });
+
+            // 弹窗关闭事件
+            document.querySelectorAll('.modal-overlay').forEach(modal=>{
+                modal.addEventListener('click',function(e){
+                    if(e.target===modal){
+                        if(modal.id==='trainingDetailModal') closeTrainingDetail();
+                        else if(modal.id==='videoModal') closeVideoModal();
+                        else if(modal.id==='fullQuizModal') closeFullQuiz();
+                        else closeSimpleModal();
+                    }
+                });
+            });
+            document.addEventListener('keydown',e=>{ if(e.key==='Escape'){
+                document.querySelectorAll('.modal-overlay.show').forEach(m=>m.classList.remove('show'));
+                document.body.style.overflow='';
+            }});
+        })();
+    </script>
+</body>
+</html>
